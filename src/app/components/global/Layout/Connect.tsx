@@ -58,6 +58,7 @@ export const Setup: FC = () => {
     activeAccountState: state,
     activeAccount: account,
     activeAccountStateStatus: status,
+    workingLoader,
   } = useYlide();
 
   const button = useMemo(() => {
@@ -105,7 +106,7 @@ export const Setup: FC = () => {
     <div className='flex flex-col items-center'>
       <div>{!account ? null : <>{abbrAddr(account.address)}</>}</div>
       <div>{account?.wallet}</div>
-      <div>{button}</div>
+      <div>{workingLoader ? <S.Button>{workingLoader}</S.Button> : button}</div>
     </div>
   );
 };

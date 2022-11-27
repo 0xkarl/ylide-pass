@@ -11,7 +11,7 @@
     "link-deps": "mkdir -p node_modules/.vite/deps && cp -f node_modules/nekoton-wasm/nekoton_wasm_bg.wasm node_modules/.vite/deps/nekoton_wasm_bg.wasm"
   },
   "dependencies": {
-    "0xkarl-everscale": "^0.7.6",
+    "0xkarl-everscale": "^0.7.5",
     "0xkarl-sdk": "^0.7.6",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",

@@ -15,12 +15,19 @@ const ItemsListView: FC = () => {
   const { items, groups, activeAccountAddress } = useYlide();
   const query = useQuery();
 
+  const groupId = useMemo(() => {
+    return query.get('group') ?? null;
+  }, [query]);
+
+  const group = useMemo(() => {
+    if (!groupId) return null;
+    const group = groups?.get(groupId);
+    return group ?? null;
+  }, [groups, groupId]);
+
   const itemsList = useMemo(() => {
     if (!(items && activeAccountAddress)) return null;
     const list = Array.from(items.entries());
-    const groupId = query.get('group');
-    if (!groupId) return list;
-    const group = groups?.get(groupId);
     if (!group) return list;
     return list.filter(([_, item]) => {
       if (groupId === PERSONAL_GROUP_ID)
@@ -30,12 +37,12 @@ const ItemsListView: FC = () => {
       }
       return false;
     });
-  }, [items, query, groups, activeAccountAddress]);
+  }, [items, group, groupId, activeAccountAddress]);
 
   return (
     <S.Container className='flex flex-col'>
       <div className='mb-2 font-bold flex justify-between'>
-        Items
+        Items ({!group ? 'All Groups' : group.name})
         <Link to={routes.newItem()}>
           <FontAwesomeIcon icon={addIcon} />
         </Link>

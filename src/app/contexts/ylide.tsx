@@ -379,7 +379,7 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
     async (address: string | null) => {
       _setActiveAccountAddress(address);
       cache(ACTIVE_ACCOUNT_ADDRESS_CACHE_KEY, address);
-      await sleep(2000);
+      await sleep(1000);
       document.location.reload();
     },
     [_setActiveAccountAddress]
@@ -458,40 +458,50 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const generateKey = useCallback(
     async (wallet: string, address: string) => {
-      const account = accountsState[address];
-      const password = await keystore.options.onPasswordRequest(
-        `Generation key for ${address}`
-      );
-      if (!password) {
-        return;
+      setWorking(true);
+      try {
+        const account = accountsState[address];
+        const password = await keystore.options.onPasswordRequest(
+          `Generation key for ${address}`
+        );
+        if (!password) {
+          return;
+        }
+        await keystore.create(
+          'store',
+          account.wallet!.factory.blockchainGroup,
+          wallet,
+          address,
+          password
+        );
+        saveAccount({
+          address,
+          wallet,
+        });
+      } finally {
+        setWorking(false);
       }
-      await keystore.create(
-        'store',
-        account.wallet!.factory.blockchainGroup,
-        wallet,
-        address,
-        password
-      );
-      saveAccount({
-        address,
-        wallet,
-      });
     },
     [keystore, accountsState, saveAccount]
   );
 
   const publishKey = useCallback(
     async (wallet: string, address: string, key: Uint8Array) => {
-      const account = accountsState[address];
-      await account.wallet!.wallet.attachPublicKey(
-        { address, blockchain: '', publicKey: null },
-        key,
-        {
-          address,
-          network,
-        }
-      );
-      document.location.reload();
+      setWorking(true);
+      try {
+        const account = accountsState[address];
+        await account.wallet!.wallet.attachPublicKey(
+          { address, blockchain: '', publicKey: null },
+          key,
+          {
+            address,
+            network,
+          }
+        );
+        document.location.reload();
+      } finally {
+        setWorking(false);
+      }
     },
     [accountsState, network]
   );
