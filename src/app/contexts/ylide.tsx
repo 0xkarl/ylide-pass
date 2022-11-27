@@ -43,6 +43,7 @@ import { v4 as uuid } from 'uuid';
 
 import cache from '@app/utils/cache';
 import { sleep } from '@app/utils/promise';
+import Loader from '@app/components/shared/Loader';
 
 Ylide.registerBlockchainFactory(evmFactories[EVMNetwork.FANTOM]);
 Ylide.registerBlockchainFactory(everscaleBlockchainFactory);
@@ -131,6 +132,9 @@ const YlideContext = createContext<{
   isAddingAccount: boolean;
   appIsReady: boolean;
   reloadLocation: () => Promise<void>;
+  working: boolean;
+  setWorking: (working: boolean) => void;
+  workingLoader: ReactNode | null;
 } | null>(null);
 
 const ACCOUNTS_CACHE_KEY = 'accounts';
@@ -203,6 +207,7 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<Map<string, Item> | null>(null);
   const [groups, setGroups] = useState<Groups>(new Map(CACHED_GROUPS));
   const [network, setNetwork] = useState<EVMNetwork>(DEFAULT_NETWORK);
+  const [working, setWorking] = useState(false);
 
   const storage = useMemo(() => new BrowserLocalStorage(), []);
   const activeAccount = useMemo(
@@ -363,6 +368,11 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
     [activeAccountStateStatus]
   );
 
+  const workingLoader = useMemo(
+    () => (!working ? null : <Loader text='Please wait' />),
+    [working]
+  );
+
   //
 
   const handlePasswordRequest = useCallback(async (reason: string) => {
@@ -468,47 +478,52 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const savePass = useCallback(
     async (item: Item) => {
-      if (
-        !(
-          ylide &&
-          activeAccountWallet &&
-          activeGenericAccount &&
-          activeAccountAddress
+      setWorking(true);
+      try {
+        if (
+          !(
+            ylide &&
+            activeAccountWallet &&
+            activeGenericAccount &&
+            activeAccountAddress
+          )
         )
-      )
-        return;
+          return;
 
-      if (!activeGenericAccount) throw new Error('Account not found');
+        if (!activeGenericAccount) throw new Error('Account not found');
 
-      const group = groups.get(item.group);
-      if (!group) throw new Error(`Group(item.group) not found`);
+        const group = groups.get(item.group);
+        if (!group) throw new Error(`Group(item.group) not found`);
 
-      const to =
-        item.group === PERSONAL_GROUP_ID
-          ? [activeAccountAddress]
-          : group.accounts.slice();
+        const to =
+          item.group === PERSONAL_GROUP_ID
+            ? [activeAccountAddress]
+            : group.accounts.slice();
 
-      if (!to.length) throw new Error(`Group(item.group) has no accounts`);
+        if (!to.length) throw new Error(`Group(item.group) has no accounts`);
 
-      item.accounts = to;
+        item.accounts = to;
 
-      const content = MessageContentV3.plain(
-        Date.now().toString(),
-        JSON.stringify(item)
-      );
+        const content = MessageContentV3.plain(
+          Date.now().toString(),
+          JSON.stringify(item)
+        );
 
-      await ylide.sendMessage(
-        {
-          wallet: activeAccountWallet.wallet,
-          sender: activeGenericAccount,
-          content,
-          recipients: to,
-          serviceCode: ServiceCode.MAIL,
-        },
-        {
-          network,
-        }
-      );
+        await ylide.sendMessage(
+          {
+            wallet: activeAccountWallet.wallet,
+            sender: activeGenericAccount,
+            content,
+            recipients: to,
+            serviceCode: ServiceCode.MAIL,
+          },
+          {
+            network,
+          }
+        );
+      } finally {
+        setWorking(false);
+      }
     },
     [
       ylide,
@@ -788,6 +803,9 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
         isAddingAccount,
         appIsReady,
         reloadLocation,
+        working,
+        setWorking,
+        workingLoader,
       }}
     >
       {children}

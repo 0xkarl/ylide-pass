@@ -77,7 +77,7 @@ const ItemForm: FC<{ itemId?: string; item?: Item }> = ({
   itemId,
   item = DEFAULT_ITEM,
 }) => {
-  const { savePass, groups } = useYlide();
+  const { savePass, groups, workingLoader } = useYlide();
   const groupsList = useMemo(() => Array.from(groups.entries()), [groups]);
   const [formData, setFormData] = useReducer(fromDataReducer, item);
   const navigate = useNavigate();
@@ -189,7 +189,7 @@ const ItemForm: FC<{ itemId?: string; item?: Item }> = ({
             disableElevation
             onClick={onSave}
           >
-            Save
+            {workingLoader || <>Save</>}
           </Button>
           <Link to={routes.items()}>
             <Button color='primary' variant='outlined' type='button'>
