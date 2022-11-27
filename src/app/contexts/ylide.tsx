@@ -26,11 +26,11 @@ import {
   ServiceCode,
   IGenericAccount,
   IMessageWithSource,
-} from '@ylide/sdk';
+} from '0xkarl-sdk';
 import {
   everscaleBlockchainFactory,
   everscaleWalletFactory,
-} from '@ylide/everscale';
+} from '0xkarl-everscale';
 import {
   evmFactories,
   ethereumWalletFactory,
@@ -47,6 +47,7 @@ import Loader from '@app/components/shared/Loader';
 
 Ylide.registerBlockchainFactory(evmFactories[EVMNetwork.FANTOM]);
 Ylide.registerBlockchainFactory(everscaleBlockchainFactory);
+// @ts-ignore
 Ylide.registerWalletFactory(ethereumWalletFactory);
 // @ts-ignore
 Ylide.registerWalletFactory(everscaleWalletFactory);

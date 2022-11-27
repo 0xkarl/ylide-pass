@@ -11,6 +11,8 @@
     "link-deps": "mkdir -p node_modules/.vite/deps && cp -f node_modules/nekoton-wasm/nekoton_wasm_bg.wasm node_modules/.vite/deps/nekoton_wasm_bg.wasm"
   },
   "dependencies": {
+    "0xkarl-everscale": "^0.7.5",
+    "0xkarl-sdk": "^0.7.6",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@ethersproject/address": "^5.7.0",
@@ -22,8 +24,6 @@
     "@mui/material": "^5.8.2",
     "@sweetalert2/theme-dark": "^5.0.10",
     "@ylide/ethereum": "^0.7.2",
-    "@ylide/everscale": "^0.7.5",
-    "@ylide/sdk": "^0.7.2",
     "assert": "^2.0.0",
     "bignumber.js": "^9.0.1",
     "buffer": "^6.0.3",

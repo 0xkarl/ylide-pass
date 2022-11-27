@@ -2,6 +2,33 @@
 # yarn lockfile v1
 
 
+"0xkarl-everscale@^0.7.5":
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/0xkarl-everscale/-/0xkarl-everscale-0.7.5.tgz#a9b2386f37ab02f73e1615abb2c4cabea39dcd82"
+  integrity sha512-i4vlIwkPhkZEJjULbjrRBKzFpWdGE0ygn30ER4KPGN8ZpcIvAsjfeCbCNrXsAzc3Iwo4dVAJBiXjG4pS1ajHEg==
+  dependencies:
+    "@ylide/sdk" "0.7.5"
+    "@ylide/smart-buffer" "0.0.9"
+    chacha "2.1.0"
+    everscale-inpage-provider "0.3.41"
+    everscale-standalone-client "2.0.27"
+    moment "2.29.4"
+    tweetnacl "1.0.3"
+
+"0xkarl-sdk@^0.7.6":
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/0xkarl-sdk/-/0xkarl-sdk-0.7.6.tgz#d7dcf50d313cf77d340b4d0283d7cb4e0b6b0a44"
+  integrity sha512-+LJ70jrWHhBj110jsS8xoahqU6BXmEK0Dum/b99wt/Z2zMo2j5lRYscWBABt+BFoCv/wQTNAC67bv9IOIXBgqw==
+  dependencies:
+    "@datastructures-js/binary-search-tree" "5.0.2"
+    "@datastructures-js/linked-list" "5.2.4"
+    "@ylide/smart-buffer" "0.0.9"
+    eventemitter3 "4.0.7"
+    idb "7.1.0"
+    js-sha256 "0.9.0"
+    pako "2.0.4"
+    tweetnacl "1.0.3"
+
 "@ampproject/remapping@^2.1.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.2.0.tgz#56c133824780de3174aed5ab6834f3026790154d"
@@ -2218,20 +2245,7 @@
     semaphore-promise "^1.4.1"
     web3 "1.8.0"
 
-"@ylide/everscale@^0.7.5":
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/@ylide/everscale/-/everscale-0.7.5.tgz#d54bbbd4465bd9cbeff0336506001f0ccc0ae60a"
-  integrity sha512-YupV/oSiJmHzDuSYWp2JuXXb543JQXz5r1qy6PKBiTQgJU49hwpmMIwdcoruJTwau0hEwn4tr6u5r04JJiO8gA==
-  dependencies:
-    "@ylide/sdk" "0.7.5"
-    "@ylide/smart-buffer" "0.0.9"
-    chacha "2.1.0"
-    everscale-inpage-provider "0.3.41"
-    everscale-standalone-client "2.0.27"
-    moment "2.29.4"
-    tweetnacl "1.0.3"
-
-"@ylide/sdk@0.7.2", "@ylide/sdk@^0.7.2":
+"@ylide/sdk@0.7.2":
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/@ylide/sdk/-/sdk-0.7.2.tgz#80df7de77da501a6324744d75955962059624bf9"
   integrity sha512-cnagNeFYx+/Z7beOn8MCt1BbhNNGTmsHWyX7NaFYaNXfSsUok19SdOLvImZgT4w0POrzJbaDBUZiIjGIC3lj3Q==
