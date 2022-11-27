@@ -132,15 +132,14 @@ const YlideContext = createContext<{
   activeAccountAddress: string | null;
   isAddingAccount: boolean;
   appIsReady: boolean;
-  reloadLocation: () => Promise<void>;
   working: boolean;
   setWorking: (working: boolean) => void;
   workingLoader: ReactNode | null;
 } | null>(null);
 
-const ACCOUNTS_CACHE_KEY = 'accounts';
+export const ACCOUNTS_CACHE_KEY = 'accounts';
 const CACHED_ACCOUNTS: Account[] = cache(ACCOUNTS_CACHE_KEY) || [];
-const ACTIVE_ACCOUNT_ADDRESS_CACHE_KEY = 'active-account-address';
+export const ACTIVE_ACCOUNT_ADDRESS_CACHE_KEY = 'active-account-address';
 const ACTIVE_ACCOUNT_ADDRESS = (() => {
   const address = cache(ACTIVE_ACCOUNT_ADDRESS_CACHE_KEY) || null;
   if (address) {
@@ -152,7 +151,7 @@ const ACTIVE_ACCOUNT_ADDRESS = (() => {
   }
   return null;
 })();
-const GROUPS_CACHE_KEY = !ACTIVE_ACCOUNT_ADDRESS
+export const GROUPS_CACHE_KEY = !ACTIVE_ACCOUNT_ADDRESS
   ? null
   : `group-${ACTIVE_ACCOUNT_ADDRESS}`;
 const CACHED_GROUPS = (() => {
@@ -191,7 +190,7 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [ylide, setYlide] = useState<Ylide | null>(null);
   const [wallets, setWallets] = useState<Wallets>([]);
   const [accounts, setAccounts] = useState<Accounts>(CACHED_ACCOUNTS);
-  const [activeAccountAddress, setActiveAccountAddress] = useState<
+  const [activeAccountAddress, _setActiveAccountAddress] = useState<
     string | null
   >(ACTIVE_ACCOUNT_ADDRESS);
   const [accountsState, setAccountsState] = useState<AccountsState>({});
@@ -376,6 +375,16 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   //
 
+  const setActiveAccountAddress = useCallback(
+    async (address: string | null) => {
+      _setActiveAccountAddress(address);
+      cache(ACTIVE_ACCOUNT_ADDRESS_CACHE_KEY, address);
+      await sleep(2000);
+      document.location.reload();
+    },
+    [_setActiveAccountAddress]
+  );
+
   const handlePasswordRequest = useCallback(async (reason: string) => {
     return prompt(`Enter Ylide password for ${reason}`);
   }, []);
@@ -404,6 +413,20 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
     [accountsState]
   );
 
+  const saveAccount = useCallback(
+    (account: Account) => {
+      setAccounts((accounts) => {
+        const a = !!accounts.find((a) => a.address === account.address)
+          ? accounts
+          : accounts.concat([account]);
+        cache(ACCOUNTS_CACHE_KEY, a);
+        return a;
+      });
+      setActiveAccountAddress(account.address);
+    },
+    [setAccounts, setActiveAccountAddress]
+  );
+
   // connect account
   const addAccount = useCallback(
     async (factory: WalletControllerFactory) => {
@@ -415,22 +438,15 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
         const exists = accounts.find((a) => a.address === newAcc.address);
         if (exists) {
           setActiveAccountAddress(exists.address);
-          reloadLocation();
         } else {
-          setAccounts((accounts) =>
-            accounts.concat([
-              {
-                wallet: factory.wallet,
-                address: newAcc.address,
-              },
-            ])
-          );
-          setActiveAccountAddress(newAcc.address);
-          reloadLocation();
+          saveAccount({
+            address: newAcc.address,
+            wallet: factory.wallet,
+          });
         }
       }
     },
-    [accounts]
+    [accounts, saveAccount, setActiveAccountAddress]
   );
 
   const startConnectAccount = async (index: number) => {
@@ -450,15 +466,18 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return;
       }
       await keystore.create(
-        `Generation key for ${address}`,
+        'store',
         account.wallet!.factory.blockchainGroup,
         wallet,
         address,
         password
       );
-      document.location.reload();
+      saveAccount({
+        address,
+        wallet,
+      });
     },
-    [keystore, accountsState]
+    [keystore, accountsState, saveAccount]
   );
 
   const publishKey = useCallback(
@@ -578,11 +597,6 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
     });
   };
 
-  const reloadLocation = async () => {
-    await sleep(500);
-    document.location.reload();
-  };
-
   // init ylide
   useEffect(() => {
     (async () => {
@@ -656,14 +670,6 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
     };
     load();
   }, [activeAccountState]);
-
-  // cache accounts on change
-  useEffect(() => {
-    cache(ACCOUNTS_CACHE_KEY, accounts);
-  }, [accounts]);
-  useEffect(() => {
-    cache(ACTIVE_ACCOUNT_ADDRESS_CACHE_KEY, activeAccountAddress);
-  }, [activeAccountAddress]);
 
   // load account states
   useEffect(() => {
@@ -803,7 +809,6 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
         activeAccountAddress,
         isAddingAccount,
         appIsReady,
-        reloadLocation,
         working,
         setWorking,
         workingLoader,

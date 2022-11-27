@@ -72,7 +72,7 @@ export const Setup: FC = () => {
           <S.Button
             onClick={() => publishKey(wallet, address, localKey!.publicKey)}
           >
-            REPLACE KEY
+            PUBLISH KEY
           </S.Button>
         );
       }

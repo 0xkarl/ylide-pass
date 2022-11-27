@@ -10,7 +10,6 @@ const AccountSwitcher: FC = () => {
     activeAccount,
     blockchain,
     setActiveAccountAddress,
-    reloadLocation,
   } = useYlide();
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
@@ -22,10 +21,9 @@ const AccountSwitcher: FC = () => {
     setAnchorEl(null);
   };
 
-  const handleSelectAccount = (account: Account) => {
+  const handleSelectAccount = async (account: Account) => {
     handleCloseMenu();
-    setActiveAccountAddress(account.address);
-    reloadLocation();
+    await setActiveAccountAddress(account.address);
   };
 
   const handleAddAccount = () => {
