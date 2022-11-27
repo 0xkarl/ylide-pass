@@ -2,17 +2,19 @@ import React, { FC, useState } from 'react';
 import { Menu, MenuItem, Box, Button } from '@mui/material';
 
 import { useYlide, Account } from '@app/contexts/ylide';
+import { abbrAddr } from '@app/utils/string';
 
 const AccountSwitcher: FC = () => {
   const {
     accounts,
     activeAccount,
+    blockchain,
     setActiveAccountAddress,
-    startConnectAccount,
+    reloadLocation,
   } = useYlide();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
-  const handleOpenMenu = (currentTarget: any) => {
+  const handleOpenMenu = (currentTarget: Element) => {
     setAnchorEl(currentTarget);
   };
 
@@ -23,21 +25,25 @@ const AccountSwitcher: FC = () => {
   const handleSelectAccount = (account: Account) => {
     handleCloseMenu();
     setActiveAccountAddress(account.address);
+    reloadLocation();
   };
 
-  return (
-    <Box ml={2}>
+  const handleAddAccount = () => {
+    handleCloseMenu();
+    setActiveAccountAddress(null);
+  };
+
+  return !activeAccount ? null : (
+    <Box>
       <Button
         variant='outlined'
         color='inherit'
         aria-haspopup='true'
         onClick={(e) => {
-          !activeAccount
-            ? startConnectAccount()
-            : handleOpenMenu(e.currentTarget);
+          handleOpenMenu(e.currentTarget);
         }}
       >
-        {!activeAccount ? <>connect</> : <>{activeAccount.address} (change)</>}
+        {abbrAddr(activeAccount.address)} ({blockchain})
       </Button>
 
       <Menu
@@ -51,9 +57,11 @@ const AccountSwitcher: FC = () => {
             key={account.address}
             onClick={() => handleSelectAccount(account)}
           >
-            {account.address}
+            {abbrAddr(account.address)} (
+            {account.address.startsWith('0:') ? 'Everscale' : 'Fantom'})
           </MenuItem>
         ))}
+        <MenuItem onClick={handleAddAccount}>Add Account</MenuItem>
       </Menu>
     </Box>
   );

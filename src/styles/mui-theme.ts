@@ -1,21 +1,24 @@
 import { createTheme } from '@mui/material';
 
-// const BORDER_RADIUS = 5
+// import { BORDER_RADIUS } from '@app/config';
 
 const theme = createTheme({
   typography: {
-    fontFamily: ['Fira Code', 'Helvetica', 'Arial', 'sans-serif'].join(','),
+    fontFamily: ['IBM Plex Sans', 'Helvetica', 'Arial', 'sans-serif'].join(','),
   },
   palette: {
     mode: 'dark',
     primary: {
-      main: 'rgba(159, 27, 188, 0.45)',
+      main: '#00e9c9',
     },
     secondary: {
-      main: '#00e9c9',
+      main: '#fc0',
     },
     error: {
       main: '#6b0808',
+    },
+    background: {
+      default: '#111111',
     },
   },
   // overrides: {

@@ -3,14 +3,17 @@
   "private": true,
   "scripts": {
     "dev": "vite --port 4444",
-    "build": "vite build",
+    "build": "vite build && yarn link-deps",
     "lint": "eslint . --ext ts,.tsx && tsc --pretty",
     "tsc": "tsc --noEmit",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "yarn link-deps",
+    "link-deps": "mkdir -p node_modules/.vite/deps && cp -f node_modules/nekoton-wasm/nekoton_wasm_bg.wasm node_modules/.vite/deps/nekoton_wasm_bg.wasm"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@ethersproject/address": "^5.7.0",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
@@ -19,6 +22,7 @@
     "@mui/material": "^5.8.2",
     "@sweetalert2/theme-dark": "^5.0.10",
     "@ylide/ethereum": "^0.7.2",
+    "@ylide/everscale": "^0.7.5",
     "@ylide/sdk": "^0.7.2",
     "assert": "^2.0.0",
     "bignumber.js": "^9.0.1",
@@ -34,7 +38,8 @@
     "react-i18next": "^11.16.9",
     "react-router": "^6.4.0",
     "react-router-dom": "^6.4.0",
-    "sweetalert2": "^11.4.10"
+    "sweetalert2": "^11.4.10",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",

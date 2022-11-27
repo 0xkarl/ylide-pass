@@ -1,1 +1,1 @@
-export const a = 1;
+export const BORDER_RADIUS = 4;
