@@ -6,6 +6,10 @@
 
 A decentralized elegant password manager powered by [Everscale](https://everscale.network/).
 
+### Video demo
+
+https://youtu.be/eTvch5_qgrk
+
 ## Prerequisites
 
 - Node.js 16
