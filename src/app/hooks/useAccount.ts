@@ -15,12 +15,11 @@ import {
   IGenericAccount,
   IMessageWithSource,
 } from '0xkarl-sdk';
-
 import { v4 as uuid } from 'uuid';
-
 import { PublicKey } from '@ylide/sdk';
 
 import cache from '@app/utils/cache';
+import { PERSONAL_GROUP_ID } from '@app/contexts/ylide';
 
 export type Wallet = {
   factory: WalletControllerFactory;
@@ -43,8 +42,6 @@ export type Item = {
   website: string;
   accounts: string[];
 };
-
-export const PERSONAL_GROUP_ID = 'personal';
 
 export type AccountState = {
   // localKey: YlideKeyPair | null;
