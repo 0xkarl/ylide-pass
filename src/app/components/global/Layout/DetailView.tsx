@@ -18,7 +18,7 @@ const DetailView: FC = () => {
         <Route path={routes.NEW_GROUP} element={<NewGroup />} />
         <Route path={routes.ITEM} element={<Item />} />
         <Route path={routes.GROUP} element={<Group />} />
-        <Route path={routes.SETTING} element={<Setting />} />
+        <Route path={routes.SETTINGS} element={<Setting />} />
         <Route
           path='*'
           element={<div className='flex justify-center'>No item selected.</div>}

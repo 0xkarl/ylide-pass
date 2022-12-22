@@ -7,7 +7,8 @@ export const GROUP = '/groups/:id';
 export const NEW_GROUP = '/groups/new';
 
 export const SETTINGS = '/settings/*';
-export const SETTING = '/settings/:route';
+
+export const SETTINGS_ROUTES = ['general', 'appearance', 'security'];
 
 export function items(groupId?: string): string {
   return `/items?group=${groupId}`;
@@ -30,7 +31,7 @@ export function newGroup(): string {
 }
 
 export function settings(): string {
-  return `/settings/*`;
+  return `/settings`;
 }
 
 export function setting(route: string): string {
