@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 
 import { NavLink } from '@styles/common';
 
-import { useYlide } from '@app/contexts/ylide';
+import { PERSONAL_GROUP_ID, useYlide } from '@app/contexts/ylide';
 import * as routes from '@app/utils/routes';
 
 import * as S from './Sidebar.styled';
@@ -32,7 +32,7 @@ const Sidebar: FC = () => {
           </>
         </div>
         <div>
-          <NavLink to={routes.groups()}>Groups</NavLink>
+          <NavLink to={routes.group(PERSONAL_GROUP_ID)}>Groups</NavLink>
         </div>
         <div>
           <NavLink to={routes.settings()}>Settings</NavLink>

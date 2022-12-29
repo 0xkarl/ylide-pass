@@ -7,11 +7,16 @@ export const Container = styled('div')(
     theme: {
       breakpoints,
       typography: { pxToRem },
+      palette,
     },
   }) => ({
     background: '#212121',
     borderTopLeftRadius: pxToRem(BORDER_RADIUS),
     borderBottomLeftRadius: pxToRem(BORDER_RADIUS),
+
+    '.active': {
+      color: palette.primary.main,
+    },
   })
 );
 

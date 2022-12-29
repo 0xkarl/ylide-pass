@@ -14,6 +14,8 @@ import { Link } from '@styles/common';
 import { useYlide, Item } from '@app/contexts/ylide';
 import * as routes from '@app/utils/routes';
 
+import PasswordInput from '@app/components/shared/PasswordInput';
+
 import * as S from './ItemForm.styled';
 
 enum ActionType {
@@ -144,8 +146,7 @@ const ItemForm: FC<{ itemId?: string; item?: Item }> = ({
           readOnly: formDisabled,
         }}
       />
-      <TextField
-        id='password'
+      <PasswordInput
         label='Password'
         type='password'
         value={formData.password}
@@ -155,12 +156,7 @@ const ItemForm: FC<{ itemId?: string; item?: Item }> = ({
             password: e.target.value,
           });
         }}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        InputProps={{
-          readOnly: formDisabled,
-        }}
+        readOnly={formDisabled}
       />
       <TextField
         id='website'

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
+
+import { NavLink as Link } from '@styles/common';
 
 import * as routes from '@app/utils/routes';
 import { toTitleCase } from '@app/utils/string';
