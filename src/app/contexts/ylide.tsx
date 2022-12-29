@@ -135,6 +135,8 @@ const YlideContext = createContext<{
   working: boolean;
   setWorking: (working: boolean) => void;
   workingLoader: ReactNode | null;
+  keys: YlideKeyStore['keys'];
+  keystore: YlideKeyStore;
 } | null>(null);
 
 export const ACCOUNTS_CACHE_KEY = 'accounts';
@@ -822,6 +824,8 @@ export const YlideProvider: FC<{ children: ReactNode }> = ({ children }) => {
         working,
         setWorking,
         workingLoader,
+        keys,
+        keystore,
       }}
     >
       {children}

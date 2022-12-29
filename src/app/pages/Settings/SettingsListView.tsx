@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
+
+import { NavLink as Link } from '@styles/common';
 
 import * as routes from '@app/utils/routes';
 import { toTitleCase } from '@app/utils/string';
 
 import * as S from './SettingsListView.styled';
-
-const ROUTES = ['general', 'appearance', 'security'];
 
 const SettingsListView: FC = () => {
   return (
@@ -14,7 +13,7 @@ const SettingsListView: FC = () => {
       <div className='mb-2 font-bold flex justify-between'>Settings</div>
 
       <div className='flex flex-col'>
-        {ROUTES.map((route) => (
+        {routes.SETTINGS_ROUTES.map((route) => (
           <Link key={route} to={routes.setting(route)}>
             {toTitleCase(route)}
           </Link>

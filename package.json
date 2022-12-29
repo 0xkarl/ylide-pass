@@ -21,6 +21,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
+    "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.8.2",
     "@sweetalert2/theme-dark": "^5.0.10",
     "@ylide/ethereum": "^0.7.2",
